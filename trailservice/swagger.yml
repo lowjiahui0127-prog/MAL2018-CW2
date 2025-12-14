@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  title: "Trail Service API"
+  version: "1.0.0"
+  description: TrailService for MAL2018 Assessment 2 (CW2).  
+
+servers:
+  - url: "/api"
+
+paths:
+  /trails:
+    get:
+      summary: "Get all trails"
+      operationId: "trails.read_all"
+      tags:
+        - Trails
+      responses:
+        "200":
+          description: "Successfully returned all trails"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrailList"
+
+    post:
+      summary: "Create a new trail (Admin Only)"
+      operationId: "trails.create"
+      tags:
+        - Trails
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrailCreate"
+      responses:
+        "201":
+          description: "Trail successfully created"
+        "401":
+          description: "Unauthorized - Invalid email/password"
+        "403":
+          description: "Forbidden - Admin only"
+
+  /trails/{trail_id}:
+    get:
+      summary: "Get a trail by ID"
+      operationId: "trails.read_one"
+      tags:
+        - Trails
+      parameters:
+        - $ref: "#/components/parameters/trail_id"
+      responses:
+        "200":
+          description: "Successfully returned trail"
+        "404":
+          description: "Trail not found"
+
+    put:
+      summary: "Update an existing trail (Admin Only)"
+      operationId: "trails.update"
+      tags:
+        - Trails
+      parameters:
+        - $ref: "#/components/parameters/trail_id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrailUpdate"
+      responses:
+        "200":
+          description: "Trail updated successfully"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden - Admin only"
+        "404":
+          description: "Trail not found"
+
+    delete:
+      summary: "Delete a trail (Admin Only)"
+      operationId: "trails.delete"
+      tags:
+        - Trails
+      parameters:
+        - $ref: "#/components/parameters/trail_id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrailDelete"
+      responses:
+        "200":
+          description: "Trail deleted successfully"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden - Admin only"
+        "404":
+          description: "Trail not found"
+
+components:
+
+  parameters:
+    trail_id:
+      name: trail_id
+      in: path
+      description: "ID of the trail"
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+
+    Trail:
+      type: object
+      properties:
+        trail_id: { type: integer }
+        trail_name: { type: string }
+        description: { type: string }
+        difficulty: 
+          type: string
+          enum: ["Easy", "Moderate", "Hard"]
+        length: { type: number }
+        elevation_gain: { type: integer }
+        estimated_time: { type: string }
+        route_type:
+          type: string
+          enum: ["Out & Back", "Loop", "Point to point"]
+        location_id: { type: integer }
+        user_id: { type: integer }
+        created_at: { type: string }
+
+    TrailList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Trail"
+
+    TrailCreate:
+      description: "Payload for creating a new trail (admin only)"
+      type: object
+      required:
+        - trail_name
+        - difficulty
+        - length
+        - route_type
+        - location_id
+        - user_id
+        - email
+        - password
+      properties:
+        trail_name: { type: string }
+        description: { type: string }
+        difficulty:
+          type: string
+          enum: ["Easy", "Moderate", "Hard"]
+        length: { type: number }
+        elevation_gain: { type: integer }
+        estimated_time: { type: string }
+        route_type:
+          type: string
+          enum: ["Out & Back", "Loop", "Point to point"]
+        location_id: { type: integer }
+        user_id: { type: integer }
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    TrailUpdate:
+      description: "Payload for updating an existing trail"
+      allOf:
+        - $ref: "#/components/schemas/TrailCreate"
+
+    TrailDelete:
+      description: "Credentials required for deleting a trail"
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string

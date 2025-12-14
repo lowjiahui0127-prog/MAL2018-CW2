@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Trail Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .trail-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .trail-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .trail-info {
+            margin-bottom: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trail List</h1>
+    <ul class="trail-list">
+        {% for t in trails %}
+        <li class="trail-card">
+            <div class="trail-title">{{ t.trail_name }}</div>
+            <div class="trail-info"><strong>Description:</strong> {{ t.description }}</div>
+            <div class="trail-info"><strong>Difficulty:</strong> {{ t.difficulty }}</div>
+            <div class="trail-info"><strong>Length:</strong> {{ t.length }} km</div>
+            <div class="trail-info"><strong>Elevation Gain:</strong> {{ t.elevation_gain }} m</div>
+            <div class="trail-info"><strong>Estimated Time:</strong> {{ t.estimated_time }}</div>
+            <div class="trail-info"><strong>Route Type:</strong> {{ t.route_type }}</div>
+            <div class="trail-info"><strong>Location:</strong> {{ t.location_id }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
