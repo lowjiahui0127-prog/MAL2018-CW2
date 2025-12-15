@@ -1,6 +1,6 @@
 # TrailService Micro-service
 
-Author: Low Jia Hui  
+Author: Low Jia Hui (BSSE2509252)  
 Module: MAL2018 Information Management & Retrieval
 
 ## Introduction
