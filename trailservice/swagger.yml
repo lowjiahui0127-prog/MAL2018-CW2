@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: "Trail Service API"
   version: "1.0.0"
-  description: TrailService for MAL2018 Assessment 2 (CW2).  
+  description: TrailService for MAL2018 Assessment 2 (CW2).
 
 servers:
   - url: "/api"
@@ -117,26 +117,54 @@ components:
     Trail:
       type: object
       properties:
-        trail_id: { type: integer }
-        trail_name: { type: string }
-        description: { type: string }
-        difficulty: 
+        trail_id:
+          type: integer
+        trail_name:
+          type: string
+        description:
+          type: string
+        difficulty:
           type: string
           enum: ["Easy", "Moderate", "Hard"]
-        length: { type: number }
-        elevation_gain: { type: integer }
-        estimated_time: { type: string }
+        length:
+          type: number
+        elevation_gain:
+          type: integer
+        estimated_time:
+          type: string
         route_type:
           type: string
           enum: ["Out & Back", "Loop", "Point to point"]
-        location_id: { type: integer }
-        user_id: { type: integer }
-        created_at: { type: string }
+        location_id:
+          type: integer
+        user_id:
+          type: integer
+        created_at:
+          type: string
 
     TrailList:
       type: array
       items:
         $ref: "#/components/schemas/Trail"
+
+    TrailPoint:
+      description: "A geographic point forming part of a trail route"
+      type: object
+      required:
+        - latitude
+        - sequence_number
+      properties:
+        latitude:
+          type: number
+          format: double
+          example: 50.403210
+        longitude:
+          type: number
+          format: double
+          example: -4.123456
+        sequence_number:
+          type: integer
+          example: 1
 
     TrailCreate:
       description: "Payload for creating a new trail (admin only)"
@@ -151,24 +179,37 @@ components:
         - email
         - password
       properties:
-        trail_name: { type: string }
-        description: { type: string }
+        trail_name:
+          type: string
+        description:
+          type: string
         difficulty:
           type: string
           enum: ["Easy", "Moderate", "Hard"]
-        length: { type: number }
-        elevation_gain: { type: integer }
-        estimated_time: { type: string }
+        length:
+          type: number
+        elevation_gain:
+          type: integer
+        estimated_time:
+          type: string
         route_type:
           type: string
           enum: ["Out & Back", "Loop", "Point to point"]
-        location_id: { type: integer }
-        user_id: { type: integer }
+        location_id:
+          type: integer
+        user_id:
+          type: integer
         email:
           type: string
           format: email
         password:
           type: string
+
+        trail_points:
+          description: "Ordered list of location points describing the trail"
+          type: array
+          items:
+            $ref: "#/components/schemas/TrailPoint"
 
     TrailUpdate:
       description: "Payload for updating an existing trail"
