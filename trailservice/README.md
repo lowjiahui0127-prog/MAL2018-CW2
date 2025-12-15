@@ -28,7 +28,7 @@ CRUD operations and integrating with an external Authenticator API for secure ac
 
 ## Project Structure
 - `app.py` - Main entry point
-- `config.py` - Configure database credentials
+- `config.py` - Database configuration
 - `models.py` - Trail data model & Marshmallow schema
 - `trails.py` - CRUD API endpoints for Trails
 - `auth.py` - Integration with the Authenticator API
